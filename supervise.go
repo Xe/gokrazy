@@ -185,6 +185,14 @@ func supervise(s *service) {
 
 		attempt++
 
+		homeDir := "/perm" + s.cmd.Path
+		os.MkdirAll(homeDir, 0700)
+
+		cmd.Env = append(cmd.Env, "GOKRAZY_ATTEMPT="+fmt.Sprint(s.attempt))
+		cmd.Env = append(cmd.Env, "GOKRAZY_BUILD_DATE="+buildTimestamp)
+		cmd.Env = append(cmd.Env, "HOSTNAME="+hostname)
+		cmd.Env = append(cmd.Env, "HOME="+homeDir)
+
 		if err := cmd.Start(); err != nil {
 			l.Println("gokrazy: " + err.Error())
 		}

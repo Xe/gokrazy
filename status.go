@@ -10,6 +10,7 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
+	"runtime"
 	"sort"
 	"strconv"
 	"strings"
@@ -146,8 +147,8 @@ func initStatus(services []*service) {
 			StartTime time.Time
 			Attempt   uint64
 			Pid       int
-			Path      string
 			Args      []string
+			Dir       string
 			Stdout    []string
 			Stderr    []string
 		}{
@@ -155,8 +156,8 @@ func initStatus(services []*service) {
 			StartTime: svc.started,
 			Attempt:   svc.attempt,
 			Pid:       svc.process.Pid,
-			Path:      svc.cmd.Path,
 			Args:      svc.cmd.Args,
+			Dir:       svc.cmd.Dir,
 			Stdout:    svc.Stdout.Lines(),
 			Stderr:    svc.Stderr.Lines(),
 		}
@@ -191,12 +192,14 @@ func initStatus(services []*service) {
 			PublicAddrs    []string
 			BuildTimestamp string
 			Services       []interface{}
+			GoVersion      string
 		}{
 			MemInfo:        parseMeminfo(),
 			Hostname:       hostname,
 			PrivateAddrs:   privateAddrs,
 			PublicAddrs:    publicAddrs,
 			BuildTimestamp: buildTimestamp,
+			GoVersion:      runtime.Version(),
 		}
 
 		for _, svc := range services {

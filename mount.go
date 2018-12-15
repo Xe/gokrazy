@@ -15,7 +15,7 @@ import (
 func mountCompat() error {
 	// Symlink /etc/resolv.conf. We cannot do this in the root file
 	// system itself, as FAT does not support symlinks.
-	if err := syscall.Mount("tmpfs", "/etc", "tmpfs", syscall.MS_NOSUID|syscall.MS_NODEV|syscall.MS_RELATIME, "size=1M"); err != nil {
+	if err := syscall.Mount("tmpfs", "/etc", "tmpfs", syscall.MS_NOSUID|syscall.MS_NODEV|syscall.MS_RELATIME, "size=2M"); err != nil {
 		return fmt.Errorf("tmpfs on /etc: %v", err)
 	}
 
